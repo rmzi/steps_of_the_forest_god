@@ -22,8 +22,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the view's delegate
         sceneView.delegate = self
         
+        ///////////
+        // DEBUG //
+        ///////////
+        // Turn on debug options to show the world origin and also render all
+        // of the feature points ARKit is tracking
+        self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
+        
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        self.sceneView.autoenablesDefaultLighting = true
         
         // Load all trees
         let allTreesScene = SCNScene(named: "art.scnassets/trees.scn")!
@@ -35,8 +43,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let palmInstance = self.palmNode?.clone()
         palmInstance?.position = SCNVector3Make(0, 0, 1)
         
+        // Create Scene to hold everything
+        // @Willie - I think this is the correct pattern for adding things from a .scn file (collection of meshes) to a new, separate scene that we can configure
+        let scene = SCNScene()
+        
+        // Add Palm
+        scene.rootNode.addChildNode(palmInstance!)
+        
         // Set the scene to the view
-        sceneView.scene = allTreesScene
+        sceneView.scene = scene
     }
     
     override func viewWillAppear(_ animated: Bool) {
