@@ -12,6 +12,8 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
+    var palmNode: SCNNode?
+    
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
@@ -23,11 +25,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        // Load all trees
+        let allTreesScene = SCNScene(named: "art.scnassets/trees.scn")!
+        
+        // Find palmNode
+        self.palmNode = allTreesScene.rootNode.childNode(withName: "palm1", recursively: true)
+        
+        // Create Palm Instance
+        let palmInstance = self.palmNode?.clone()
+        palmInstance?.position = SCNVector3Make(0, 0, 1)
         
         // Set the scene to the view
-        sceneView.scene = scene
+        sceneView.scene = allTreesScene
     }
     
     override func viewWillAppear(_ animated: Bool) {
