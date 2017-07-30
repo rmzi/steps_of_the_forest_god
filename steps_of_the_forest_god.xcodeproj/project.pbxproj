@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C234C001F2D74A4006F4FC5 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5C234BFF1F2D74A4006F4FC5 /* .gitignore */; };
 		F0DF9C241F2D5DC200B3BEA7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DF9C231F2D5DC200B3BEA7 /* AppDelegate.swift */; };
 		F0DF9C261F2D5DC200B3BEA7 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F0DF9C251F2D5DC200B3BEA7 /* art.scnassets */; };
 		F0DF9C281F2D5DC200B3BEA7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DF9C271F2D5DC200B3BEA7 /* ViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C234BFF1F2D74A4006F4FC5 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		F0DF9C201F2D5DC200B3BEA7 /* steps_of_the_forest_god.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = steps_of_the_forest_god.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0DF9C231F2D5DC200B3BEA7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F0DF9C251F2D5DC200B3BEA7 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		F0DF9C171F2D5DC200B3BEA7 = {
 			isa = PBXGroup;
 			children = (
+				5C234BFF1F2D74A4006F4FC5 /* .gitignore */,
 				F0DF9C221F2D5DC200B3BEA7 /* steps_of_the_forest_god */,
 				F0DF9C391F2D5DC200B3BEA7 /* steps_of_the_forest_godTests */,
 				F0DF9C441F2D5DC200B3BEA7 /* steps_of_the_forest_godUITests */,
@@ -232,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C234C001F2D74A4006F4FC5 /* .gitignore in Resources */,
 				F0DF9C261F2D5DC200B3BEA7 /* art.scnassets in Resources */,
 				F0DF9C301F2D5DC200B3BEA7 /* LaunchScreen.storyboard in Resources */,
 				F0DF9C2D1F2D5DC200B3BEA7 /* Assets.xcassets in Resources */,
@@ -532,6 +536,7 @@
 				F0DF9C4C1F2D5DC200B3BEA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F0DF9C4D1F2D5DC200B3BEA7 /* Build configuration list for PBXNativeTarget "steps_of_the_forest_godTests" */ = {
 			isa = XCConfigurationList;
@@ -540,6 +545,7 @@
 				F0DF9C4F1F2D5DC200B3BEA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F0DF9C501F2D5DC200B3BEA7 /* Build configuration list for PBXNativeTarget "steps_of_the_forest_godUITests" */ = {
 			isa = XCConfigurationList;
@@ -548,6 +554,7 @@
 				F0DF9C521F2D5DC200B3BEA7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
