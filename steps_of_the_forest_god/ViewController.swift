@@ -98,11 +98,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Animate tree to grow then shrink
         let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
-        let palmSequence = SCNAction.sequence([growPalmAction, shrinkPalmAction])
+        let palmSequence = SCNAction.sequence([growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
         
-        // TEMP: Repeat the action forever
-        let repAction = SCNAction.repeatForever(palmSequence!)
-        palmClone.runAction(repAction!)
+        palmClone.runAction(palmSequence!)
         
         // Set position of palm tree to position passed through parameter
         palmClone.position = position
