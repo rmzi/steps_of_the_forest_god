@@ -38,8 +38,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.palmNode?.scale = SCNVector3Make(0, 0, 0)
         
         // Animate tree
-        let growTreeAction = SCNAction.scale(to: 0.1, duration: 5)
-        let shrinkTreeAction = SCNAction.scale(to: 0, duration: 5)
+        let growTreeAction = SCNAction.scale(to: 0.3, duration: 0.5)
+        let shrinkTreeAction = SCNAction.scale(to: 0, duration: 1.5)
         let treeSequence = SCNAction.sequence([growTreeAction, shrinkTreeAction])
         
         // TEMP: Repeat the action forever
@@ -101,5 +101,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+    
+    // TEMP: Create trees on touch
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let results = sceneView.hitTest(touch.location(in: sceneView), types: [ARHitTestResult.ResultType.featurePoint])
+        guard let hitFeature = results.last else { return }
+        let hitTransform = SCNMatrix4(hitFeature.worldTransform)
+        let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
+        let treeClone = palmNode!.clone()
+        treeClone.position = hitPosition
+        sceneView.scene.rootNode.addChildNode(treeClone)
     }
 }
