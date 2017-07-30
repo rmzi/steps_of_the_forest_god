@@ -6,6 +6,7 @@
 //  Copyright © 2017 Ramzi Abdoch. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 import SceneKit
 import ARKit
@@ -96,9 +97,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         palmClone.scale = SCNVector3Make(0, 0, 0)
         
         // Animate tree to grow then shrink
+        let audioSource = SCNAudioSource(fileNamed: "art.scnassets/tree_sound.mp3")
+        let playSound = SCNAction.playAudio(audioSource!, waitForCompletion: false)
+        
         let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
-        let palmSequence = SCNAction.sequence([growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
+        let palmSequence = SCNAction.sequence([playSound, growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
         
         palmClone.runAction(palmSequence!)
         
