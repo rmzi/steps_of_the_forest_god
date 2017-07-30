@@ -31,6 +31,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Find palmNode
         self.palmNode = allTreesScene.rootNode.childNode(withName: "palm1", recursively: true)
         
+        // Rotate the tree to be upright
+        self.palmNode?.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
+        
         // Set scale of tree to 0
         self.palmNode?.scale = SCNVector3Make(0, 0, 0)
         
