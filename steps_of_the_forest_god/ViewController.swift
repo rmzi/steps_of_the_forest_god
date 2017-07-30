@@ -66,9 +66,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // @Willie - I think this is the correct pattern for adding things from a .scn file (collection of meshes) to a new, separate scene that we can configure
         let scene = SCNScene()
         
-        // Add Palm
-        scene.rootNode.addChildNode(palmInstance!)
-        
         // Set the scene to the view
         sceneView.scene = scene
     }
