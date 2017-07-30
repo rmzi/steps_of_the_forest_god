@@ -38,17 +38,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         self.palmNode?.scale = SCNVector3Make(0, 0, 0)
         
         // Animate tree
-        let growTreeAction = SCNAction.scale(to: 2, duration: 5)
+        let growTreeAction = SCNAction.scale(to: 0.1, duration: 5)
         let shrinkTreeAction = SCNAction.scale(to: 0, duration: 5)
         let treeSequence = SCNAction.sequence([growTreeAction, shrinkTreeAction])
         
+        // TEMP: Repeat the action forever
         let repAction = SCNAction.repeatForever(treeSequence!)
         
         self.palmNode?.runAction(repAction!)
         
         // Create Palm Instance
         let palmInstance = self.palmNode?.clone()
-        palmInstance?.position = SCNVector3Make(0, 0, 1)
+        palmInstance?.position = SCNVector3Make(0, 0, 10)
         
         // Set the scene to the view
         sceneView.scene = allTreesScene
