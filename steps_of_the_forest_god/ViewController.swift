@@ -41,7 +41,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create Palm Instance
         let palmInstance = self.palmNode?.clone()
-        palmInstance?.position = SCNVector3Make(0, 0, 1)
+        palmInstance?.position = SCNVector3Make(0, 0, -1)
         
         // Create Scene to hold everything
         // @Willie - I think this is the correct pattern for adding things from a .scn file (collection of meshes) to a new, separate scene that we can configure
