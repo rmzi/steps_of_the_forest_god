@@ -31,26 +31,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Find palmNode
         self.palmNode = allTreesScene.rootNode.childNode(withName: "palm1", recursively: true)
         
-        // Rotate the tree to be upright
-        self.palmNode?.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
-        
-        // Set scale of tree to 0
-        self.palmNode?.scale = SCNVector3Make(0, 0, 0)
-        
-        // Animate tree
-        let growTreeAction = SCNAction.scale(to: 0.3, duration: 0.5)
-        let shrinkTreeAction = SCNAction.scale(to: 0, duration: 1.5)
-        let treeSequence = SCNAction.sequence([growTreeAction, shrinkTreeAction])
-        
-        // TEMP: Repeat the action forever
-        let repAction = SCNAction.repeatForever(treeSequence!)
-        
-        self.palmNode?.runAction(repAction!)
-        
-        // Create Palm Instance
-        let palmInstance = self.palmNode?.clone()
-        palmInstance?.position = SCNVector3Make(0, 0, 10)
-        
         // Set the scene to the view
         sceneView.scene = allTreesScene
     }
@@ -103,6 +83,29 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    func createPalmTree(position : SCNVector3) {
+        let palmClone = palmNode!.clone()
+        
+        // Rotate the palm tree to be upright
+        palmClone.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
+        
+        // Set scale of tree to 0
+        palmClone.scale = SCNVector3Make(0, 0, 0)
+        
+        // Animate tree
+        let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
+        let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
+        let palmSequence = SCNAction.sequence([growPalmAction, shrinkPalmAction])
+        
+        // TEMP: Repeat the action forever
+        let repAction = SCNAction.repeatForever(palmSequence!)
+        palmClone.runAction(repAction!)
+        
+        palmClone.position = position
+        
+        sceneView.scene.rootNode.addChildNode(palmClone)
+    }
+    
     // TEMP: Create trees on touch
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -110,8 +113,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         guard let hitFeature = results.last else { return }
         let hitTransform = SCNMatrix4(hitFeature.worldTransform)
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
-        let treeClone = palmNode!.clone()
-        treeClone.position = hitPosition
-        sceneView.scene.rootNode.addChildNode(treeClone)
+        
+        createPalmTree(position: hitPosition)
     }
 }
