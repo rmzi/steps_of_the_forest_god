@@ -95,7 +95,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set scale of tree to 0
         palmClone.scale = SCNVector3Make(0, 0, 0)
         
-        // Animate tree
+        // Animate tree to grow then shrink
         let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
         let palmSequence = SCNAction.sequence([growPalmAction, shrinkPalmAction])
@@ -104,6 +104,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let repAction = SCNAction.repeatForever(palmSequence!)
         palmClone.runAction(repAction!)
         
+        // Set position of palm tree to position passed through parameter
         palmClone.position = position
         
         sceneView.scene.rootNode.addChildNode(palmClone)
@@ -111,12 +112,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // TEMP: Create trees on touch
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Compute the 3D position where the user tapped
         guard let touch = touches.first else { return }
         let results = sceneView.hitTest(touch.location(in: sceneView), types: [ARHitTestResult.ResultType.featurePoint])
         guard let hitFeature = results.last else { return }
         let hitTransform = SCNMatrix4(hitFeature.worldTransform)
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
         
+        // Creates a palm tree at the location detected by touch
         createPalmTree(position: hitPosition, maxScale: 0.5, minScale: 0.2)
     }
 }
