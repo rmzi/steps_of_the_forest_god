@@ -83,7 +83,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    func createPalmTree(position : SCNVector3) {
+    // Creates a copy of the palm tree and randomizes the animation & rotation
+    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float) {
+        // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
+        
         let palmClone = palmNode!.clone()
         
         // Rotate the palm tree to be upright
@@ -114,6 +117,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let hitTransform = SCNMatrix4(hitFeature.worldTransform)
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
         
-        createPalmTree(position: hitPosition)
+        createPalmTree(position: hitPosition, maxScale: 0.5, minScale: 0.2)
     }
 }
