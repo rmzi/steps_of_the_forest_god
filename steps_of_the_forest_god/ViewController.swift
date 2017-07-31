@@ -133,8 +133,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // Creates a copy of the palm tree and randomizes the animation & rotation
     func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double?) {
-        // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
-        
         let allTrees = [palmNodes, pineNodes, treeNodes, trunkNodes]
         let randTypeIndex = arc4random_uniform(UInt32(allTrees.count))
         let randType = allTrees[Int(randTypeIndex)]
@@ -142,9 +140,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let randNode = randType[Int(randNodeIndex)]
         
         let palmClone = randNode!.clone()
-        
-        // Rotate the palm tree to be upright
-        // palmClone.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
         
         // Set scale of tree to 0
         palmClone.scale = SCNVector3Make(0, 0, 0)
@@ -161,6 +156,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // If a delay amount has been passed, delay the sequence from starting. Otherwise, play normal sequence right away
         if let maxDelayAmt = maxDelay {
+            // Randomize the delay to create an organic forest growth animation
             let delayAmt = drand48() * maxDelayAmt
             delaySequence = SCNAction.wait(duration: delayAmt)
             palmSequence = SCNAction.sequence([
