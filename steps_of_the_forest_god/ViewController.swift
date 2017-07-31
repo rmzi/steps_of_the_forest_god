@@ -127,14 +127,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             treePosition.x = treePosition.x + (radius)*cos(2.0 * Float.pi / Float(amount) * Float(i))
             treePosition.z = treePosition.z - (radius)*sin(2.0 * Float.pi / Float(amount) * Float(i))
             
-            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, delay: 0.05*Double(i))
+            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 1.0)
         }
     }
     
     // Creates a copy of the palm tree and randomizes the animation & rotation
-    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, delay: Double?) {
-        // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
-        
+    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double) {
         let allTrees = [palmNodes, pineNodes, treeNodes, trunkNodes]
         let randTypeIndex = arc4random_uniform(UInt32(allTrees.count))
         let randType = allTrees[Int(randTypeIndex)]
@@ -143,38 +141,42 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let palmClone = randNode!.clone()
         
-        // Rotate the palm tree to be upright
-        // palmClone.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
-        
         // Set scale of tree to 0
         palmClone.scale = SCNVector3Make(0, 0, 0)
         
-        // Animate tree to grow then shrink
+        // Play tree creation sound (TODO: Find a better sound)
         let audioSource = SCNAudioSource(fileNamed: "art.scnassets/tree_sound.mp3")
         let playSound = SCNAction.playAudio(audioSource!, waitForCompletion: false)
         
-        let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
+        // Calculate a random scale between the provided min and max scale
+        let scaleAmt = CGFloat(drand48()) * CGFloat(maxScale - minScale) + CGFloat(minScale)
+        
+        // Animate tree to grow then shrink
+        let growPalmAction = SCNAction.scale(to: scaleAmt, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
 
         var delaySequence : SCNAction
         var palmSequence : SCNAction
+
+        let delayAmt = drand48() * maxDelay
+        delaySequence = SCNAction.wait(duration: delayAmt)
         
-        // If a delay amount has been passed, delay the sequence from starting. Otherwise, play normal sequence right away
-        if let delayAmt = delay {
-            delaySequence = SCNAction.wait(duration: delayAmt)
+        // Randomize deletion (some elements won't be deleted after growing)
+        let deletionChance = 0.67
+        
+        if (drand48() < deletionChance) {
             palmSequence = SCNAction.sequence([
-                    delaySequence,
-                    playSound,
-                    growPalmAction,
-                    shrinkPalmAction,
-                    SCNAction.removeFromParentNode()
+                delaySequence,
+                playSound,
+                growPalmAction,
+                shrinkPalmAction,
+                SCNAction.removeFromParentNode()
                 ])!
         } else {
             palmSequence = SCNAction.sequence([
-                    playSound,
-                    growPalmAction,
-                    shrinkPalmAction,
-                    SCNAction.removeFromParentNode()
+                delaySequence,
+                playSound,
+                growPalmAction
                 ])!
         }
         
@@ -196,6 +198,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
         
         // Creates a palm tree at the location detected by touch
-        createPalmTreeRing(position: hitPosition, radius: 0.15, amount: 8)
+        createPalmTreeRing(position: hitPosition, radius: 0.25, amount: 8)
     }
 }
