@@ -10,7 +10,7 @@ This project was started as a way to play with Apple's new ARKit. We toyed aroun
 
 ## Why
 
-ARKit is super cool and we wanted to try something brand new. Also wanted to attempt to make something holistic, end-to-end. We created the game, the music, the interactions, and tried hard to make the 3D assets, but got those off the shelf (s/o PolyDust https://www.polydust.com) for the free assets :)
+ARKit is super cool and we wanted to try something brand new. Also wanted to attempt to make something holistic, end-to-end. We created the game, the music, the interactions, and tried hard to make the 3D assets, but got those off the shelf (s/o PolyDust https://www.polydust.com for the free assets 🌝)
 
 ## How
 
