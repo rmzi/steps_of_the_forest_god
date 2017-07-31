@@ -148,7 +148,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let audioSource = SCNAudioSource(fileNamed: "art.scnassets/tree_sound.mp3")
         let playSound = SCNAction.playAudio(audioSource!, waitForCompletion: false)
         
-        let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
+        // Calculate a random scale between the provided min and max scale
+        let scaleAmt = CGFloat(drand48()) * CGFloat(maxScale - minScale) + CGFloat(minScale)
+        
+        let growPalmAction = SCNAction.scale(to: scaleAmt, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
 
         var delaySequence : SCNAction
