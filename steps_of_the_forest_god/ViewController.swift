@@ -160,13 +160,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
         let delayAmt = drand48() * maxDelay
         delaySequence = SCNAction.wait(duration: delayAmt)
-        palmSequence = SCNAction.sequence([
+        
+        // Randomize deletion (some elements won't be deleted after growing)
+        let deletionChance = 0.67
+        
+        if (drand48() < deletionChance) {
+            palmSequence = SCNAction.sequence([
                 delaySequence,
                 playSound,
                 growPalmAction,
                 shrinkPalmAction,
                 SCNAction.removeFromParentNode()
-            ])!
+                ])!
+        } else {
+            palmSequence = SCNAction.sequence([
+                delaySequence,
+                playSound,
+                growPalmAction
+                ])!
+        }
+        
         palmClone.runAction(palmSequence)
         
         // Set position of palm tree to position passed through parameter
