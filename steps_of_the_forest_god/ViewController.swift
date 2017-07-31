@@ -144,13 +144,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set scale of tree to 0
         palmClone.scale = SCNVector3Make(0, 0, 0)
         
-        // Animate tree to grow then shrink
+        // Play tree creation sound (TODO: Find a better sound)
         let audioSource = SCNAudioSource(fileNamed: "art.scnassets/tree_sound.mp3")
         let playSound = SCNAction.playAudio(audioSource!, waitForCompletion: false)
         
         // Calculate a random scale between the provided min and max scale
         let scaleAmt = CGFloat(drand48()) * CGFloat(maxScale - minScale) + CGFloat(minScale)
         
+        // Animate tree to grow then shrink
         let growPalmAction = SCNAction.scale(to: scaleAmt, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
 
