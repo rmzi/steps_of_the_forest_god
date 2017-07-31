@@ -88,8 +88,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func createPalmTreeRing(position: SCNVector3, radius: Float, amount: Int) {
         // TODO: Calculate ring around touch point
         
-        // TEMP: Create a singular palm tree at center of ring
-        createPalmTree(position: position, maxScale: 0.5, minScale: 0.2)
+        // TEMP: Create a box around touch point
+        var northPosition: SCNVector3 = position
+        northPosition.z = northPosition.z - radius
+        createPalmTree(position: northPosition, maxScale: 0.5, minScale: 0.2)
+        
+        var eastPosition: SCNVector3 = position
+        eastPosition.x = eastPosition.x + radius
+        createPalmTree(position: eastPosition, maxScale: 0.5, minScale: 0.2)
+        
+        var southPosition: SCNVector3 = position
+        southPosition.z = southPosition.z + radius
+        createPalmTree(position: southPosition, maxScale: 0.5, minScale: 0.2)
+        
+        var westPosition: SCNVector3 = position
+        westPosition.x = westPosition.x - radius
+        createPalmTree(position: westPosition, maxScale: 0.5, minScale: 0.2)
     }
     
     // Creates a copy of the palm tree and randomizes the animation & rotation
@@ -130,6 +144,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
         
         // Creates a palm tree at the location detected by touch
-        createPalmTreeRing(position: hitPosition, radius: 0.5, amount: 8)
+        createPalmTreeRing(position: hitPosition, radius: 0.15, amount: 8)
     }
 }
