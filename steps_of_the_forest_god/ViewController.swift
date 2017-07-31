@@ -122,10 +122,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float) {
         // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
         
-        let palmClone = palmNodes[0]!.clone()
+        let allTrees = [palmNodes, pineNodes, treeNodes, trunkNodes]
+        let randTypeIndex = arc4random_uniform(UInt32(allTrees.count))
+        let randType = allTrees[Int(randTypeIndex)]
+        let randNodeIndex = arc4random_uniform(UInt32(randType.count))
+        let randNode = randType[Int(randNodeIndex)]
+        
+        let palmClone = randNode!.clone()
         
         // Rotate the palm tree to be upright
-        palmClone.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
+        // palmClone.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
         
         // Set scale of tree to 0
         palmClone.scale = SCNVector3Make(0, 0, 0)
