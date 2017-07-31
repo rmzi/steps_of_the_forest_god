@@ -132,7 +132,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     // Creates a copy of the palm tree and randomizes the animation & rotation
-    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double?) {
+    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double) {
         let allTrees = [palmNodes, pineNodes, treeNodes, trunkNodes]
         let randTypeIndex = arc4random_uniform(UInt32(allTrees.count))
         let randType = allTrees[Int(randTypeIndex)]
@@ -156,28 +156,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
         var delaySequence : SCNAction
         var palmSequence : SCNAction
-        
-        // If a delay amount has been passed, delay the sequence from starting. Otherwise, play normal sequence right away
-        if let maxDelayAmt = maxDelay {
-            // Randomize the delay to create an organic forest growth animation
-            let delayAmt = drand48() * maxDelayAmt
-            delaySequence = SCNAction.wait(duration: delayAmt)
-            palmSequence = SCNAction.sequence([
-                    delaySequence,
-                    playSound,
-                    growPalmAction,
-                    shrinkPalmAction,
-                    SCNAction.removeFromParentNode()
-                ])!
-        } else {
-            palmSequence = SCNAction.sequence([
-                    playSound,
-                    growPalmAction,
-                    shrinkPalmAction,
-                    SCNAction.removeFromParentNode()
-                ])!
-        }
-        
+
+        let delayAmt = drand48() * maxDelay
+        delaySequence = SCNAction.wait(duration: delayAmt)
+        palmSequence = SCNAction.sequence([
+                delaySequence,
+                playSound,
+                growPalmAction,
+                shrinkPalmAction,
+                SCNAction.removeFromParentNode()
+            ])!
         palmClone.runAction(palmSequence)
         
         // Set position of palm tree to position passed through parameter
