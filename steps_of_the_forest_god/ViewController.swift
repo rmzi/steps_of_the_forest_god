@@ -84,6 +84,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
+    // Creates trees in a ring
+    func createPalmTreeRing(position: SCNVector3, radius: Float, amount: Int) {
+        // TODO: Calculate ring around touch point
+    }
+    
     // Creates a copy of the palm tree and randomizes the animation & rotation
     func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float) {
         // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
