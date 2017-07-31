@@ -26,3 +26,5 @@ This project was created by Wilhelm Willie (@wilhelmwillie) and Ramzi Abdoch (@r
 Special s/o to Thomas Sanderson and Alex Struck for kickin' it with us while we made this.
 
 ~ V A L U E T R A P ~
+
+![Speed Project Approved! 1 Hr](docs/assets/speed_project_8h.png)
