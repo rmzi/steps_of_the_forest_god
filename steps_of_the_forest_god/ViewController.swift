@@ -13,7 +13,10 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
 
-    var palmNode: SCNNode?
+    var palmNodes = [SCNNode?]()
+    var pineNodes = [SCNNode?]()
+    var treeNodes = [SCNNode?]()
+    var trunkNodes = [SCNNode?]()
     
     @IBOutlet var sceneView: ARSCNView!
     
@@ -29,8 +32,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Load all trees
         let allTreesScene = SCNScene(named: "art.scnassets/trees.scn")!
         
-        // Find palmNode
-        self.palmNode = allTreesScene.rootNode.childNode(withName: "palm1", recursively: true)
+        // Find all tree / trunk / palm nodes
+        
+        // Palm
+        for i in 1...2 {
+            self.palmNodes.append(allTreesScene.rootNode.childNode(withName: "palm\(i)", recursively: true))
+        }
+        
+        // Pine
+        for i in 1...5 {
+            self.pineNodes.append(allTreesScene.rootNode.childNode(withName: "pine\(i)", recursively: true))
+        }
+        
+        // Tree
+        for i in 1...5 {
+            self.treeNodes.append(allTreesScene.rootNode.childNode(withName: "tree\(i)", recursively: true))
+        }
+        
+        // Trunk
+        for i in 1...3 {
+            self.trunkNodes.append(allTreesScene.rootNode.childNode(withName: "trunk\(i)", recursively: true))
+        }
         
         // Set the scene to the view
         sceneView.scene = allTreesScene
@@ -104,7 +126,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
         let palmSequence = SCNAction.sequence([playSound, growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
         
-        palmClone.runAction(palmSequence!)
+        palmClone.runAction(palmSequence)
         
         // Set position of palm tree to position passed through parameter
         palmClone.position = position
