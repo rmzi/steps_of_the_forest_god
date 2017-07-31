@@ -118,31 +118,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    // Creates trees in a ring
-    func createPalmTreeRing(position: SCNVector3, radius: Float, amount: Int) {
+    // Creates ring of trees around a specified point
+    func createForestRing(position: SCNVector3, radius: Float, amount: Int) {
         // Calculate points along the circumfrence
         for i in 0...(amount-1) {
             // Use trigonometry to calculate coordinates #radians
             var treePosition: SCNVector3 = position
             treePosition.x = treePosition.x + (radius)*cos(2.0 * Float.pi / Float(amount) * Float(i))
             treePosition.z = treePosition.z - (radius)*sin(2.0 * Float.pi / Float(amount) * Float(i))
-            
-            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 1.0)
+
+            createTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 1.0)
         }
     }
     
-    // Creates a copy of the palm tree and randomizes the animation & rotation
-    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double) {
+    // Creates a copy of a random tree and randomizes the animation & rotation
+    func createTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double) {
         let allTrees = [palmNodes, pineNodes, treeNodes, trunkNodes]
         let randTypeIndex = arc4random_uniform(UInt32(allTrees.count))
         let randType = allTrees[Int(randTypeIndex)]
         let randNodeIndex = arc4random_uniform(UInt32(randType.count))
         let randNode = randType[Int(randNodeIndex)]
         
-        let palmClone = randNode!.clone()
+        let treeClone = randNode!.clone()
         
         // Set scale of tree to 0
-        palmClone.scale = SCNVector3Make(0, 0, 0)
+        treeClone.scale = SCNVector3Make(0, 0, 0)
         
         // Play tree creation sound (TODO: Find a better sound)
         let audioSource = SCNAudioSource(fileNamed: "art.scnassets/tree_sound.mp3")
@@ -152,11 +152,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let scaleAmt = CGFloat(drand48()) * CGFloat(maxScale - minScale) + CGFloat(minScale)
         
         // Animate tree to grow then shrink
-        let growPalmAction = SCNAction.scale(to: scaleAmt, duration: 0.5)
-        let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
+        let growTreeAction = SCNAction.scale(to: scaleAmt, duration: 0.5)
+        let shrinkTreeAction = SCNAction.scale(to: 0, duration: 1.5)
 
         var delaySequence : SCNAction
-        var palmSequence : SCNAction
+        var treeSequence : SCNAction
 
         let delayAmt = drand48() * maxDelay
         delaySequence = SCNAction.wait(duration: delayAmt)
@@ -165,27 +165,27 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let deletionChance = 0.67
         
         if (drand48() < deletionChance) {
-            palmSequence = SCNAction.sequence([
+            treeSequence = SCNAction.sequence([
                 delaySequence,
                 playSound,
-                growPalmAction,
-                shrinkPalmAction,
+                growTreeAction,
+                shrinkTreeAction,
                 SCNAction.removeFromParentNode()
                 ])!
         } else {
-            palmSequence = SCNAction.sequence([
+            treeSequence = SCNAction.sequence([
                 delaySequence,
                 playSound,
-                growPalmAction
+                growTreeAction
                 ])!
         }
         
-        palmClone.runAction(palmSequence)
+        treeClone.runAction(treeSequence)
         
         // Set position of palm tree to position passed through parameter
-        palmClone.position = position
+        treeClone.position = position
         
-        sceneView.scene.rootNode.addChildNode(palmClone)
+        sceneView.scene.rootNode.addChildNode(treeClone)
     }
     
     // TEMP: Create trees on touch
@@ -196,8 +196,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         guard let hitFeature = results.last else { return }
         let hitTransform = SCNMatrix4(hitFeature.worldTransform)
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
-        
-        // Creates a palm tree at the location detected by touch
-        createPalmTreeRing(position: hitPosition, radius: 0.25, amount: 8)
+
+        // Creates a forest ring at the location detected by touch
+        createForestRing(position: hitPosition, radius: 0.25, amount: 8)
     }
 }
