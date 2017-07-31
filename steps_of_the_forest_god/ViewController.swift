@@ -103,7 +103,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         var westPosition: SCNVector3 = position
         westPosition.x = westPosition.x - radius
-        createPalmTree(position: westPosition, maxScale: 0.5, minScale: 0.2)
+        
+        // Calculate points along the circumfrence
+        for i in 0...(amount-1) {
+            var treePosition: SCNVector3 = position
+            treePosition.x = treePosition.x + (radius)*cos(2.0 * Float.pi / Float(amount) * Float(i))
+            treePosition.z = treePosition.z - (radius)*sin(2.0 * Float.pi / Float(amount) * Float(i))
+            
+            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2)
+        }
     }
     
     // Creates a copy of the palm tree and randomizes the animation & rotation
