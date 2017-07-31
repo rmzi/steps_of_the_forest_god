@@ -18,6 +18,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var treeNodes = [SCNNode?]()
     var trunkNodes = [SCNNode?]()
     
+    // Store AVPlayer
+    var audioPlayer:AVPlayer!
+    
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
@@ -25,6 +28,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Set the view's delegate
         sceneView.delegate = self
+        
+        // Play BG Music
+        audioPlayer = AVPlayer(url: NSURL(fileURLWithPath: Bundle.main.path(forResource: "art.scnassets/bg_music", ofType: "mp3")!) as URL)
+        audioPlayer.play()
         
         ///////////
         // DEBUG //
