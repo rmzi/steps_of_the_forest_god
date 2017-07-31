@@ -127,7 +127,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             treePosition.x = treePosition.x + (radius)*cos(2.0 * Float.pi / Float(amount) * Float(i))
             treePosition.z = treePosition.z - (radius)*sin(2.0 * Float.pi / Float(amount) * Float(i))
             
-            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 3.0)
+            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 1.0)
         }
     }
     
@@ -196,6 +196,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
         
         // Creates a palm tree at the location detected by touch
-        createPalmTreeRing(position: hitPosition, radius: 0.15, amount: 8)
+        createPalmTreeRing(position: hitPosition, radius: 0.25, amount: 8)
     }
 }
