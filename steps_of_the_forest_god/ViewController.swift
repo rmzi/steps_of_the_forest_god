@@ -6,6 +6,7 @@
 //  Copyright © 2017 Ramzi Abdoch. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 import SceneKit
 import ARKit
@@ -30,10 +31,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Find palmNode
         self.palmNode = allTreesScene.rootNode.childNode(withName: "palm1", recursively: true)
-        
-        // Create Palm Instance
-        let palmInstance = self.palmNode?.clone()
-        palmInstance?.position = SCNVector3Make(0, 0, 1)
         
         // Set the scene to the view
         sceneView.scene = allTreesScene
@@ -85,5 +82,46 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+    
+    // Creates a copy of the palm tree and randomizes the animation & rotation
+    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float) {
+        // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
+        
+        let palmClone = palmNode!.clone()
+        
+        // Rotate the palm tree to be upright
+        palmClone.rotation = SCNVector4Make(-1, 0, 0, Float(Double.pi / 2))
+        
+        // Set scale of tree to 0
+        palmClone.scale = SCNVector3Make(0, 0, 0)
+        
+        // Animate tree to grow then shrink
+        let audioSource = SCNAudioSource(fileNamed: "art.scnassets/tree_sound.mp3")
+        let playSound = SCNAction.playAudio(audioSource!, waitForCompletion: false)
+        
+        let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
+        let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
+        let palmSequence = SCNAction.sequence([playSound, growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
+        
+        palmClone.runAction(palmSequence!)
+        
+        // Set position of palm tree to position passed through parameter
+        palmClone.position = position
+        
+        sceneView.scene.rootNode.addChildNode(palmClone)
+    }
+    
+    // TEMP: Create trees on touch
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Compute the 3D position where the user tapped
+        guard let touch = touches.first else { return }
+        let results = sceneView.hitTest(touch.location(in: sceneView), types: [ARHitTestResult.ResultType.featurePoint])
+        guard let hitFeature = results.last else { return }
+        let hitTransform = SCNMatrix4(hitFeature.worldTransform)
+        let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
+        
+        // Creates a palm tree at the location detected by touch
+        createPalmTree(position: hitPosition, maxScale: 0.5, minScale: 0.2)
     }
 }
