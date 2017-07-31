@@ -86,36 +86,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // Creates trees in a ring
     func createPalmTreeRing(position: SCNVector3, radius: Float, amount: Int) {
-        // TODO: Calculate ring around touch point
-        
-        // TEMP: Create a box around touch point
-        var northPosition: SCNVector3 = position
-        northPosition.z = northPosition.z - radius
-        createPalmTree(position: northPosition, maxScale: 0.5, minScale: 0.2)
-        
-        var eastPosition: SCNVector3 = position
-        eastPosition.x = eastPosition.x + radius
-        createPalmTree(position: eastPosition, maxScale: 0.5, minScale: 0.2)
-        
-        var southPosition: SCNVector3 = position
-        southPosition.z = southPosition.z + radius
-        createPalmTree(position: southPosition, maxScale: 0.5, minScale: 0.2)
-        
-        var westPosition: SCNVector3 = position
-        westPosition.x = westPosition.x - radius
-        
         // Calculate points along the circumfrence
         for i in 0...(amount-1) {
+            // Use trigonometry to calculate coordinates #radians
             var treePosition: SCNVector3 = position
             treePosition.x = treePosition.x + (radius)*cos(2.0 * Float.pi / Float(amount) * Float(i))
             treePosition.z = treePosition.z - (radius)*sin(2.0 * Float.pi / Float(amount) * Float(i))
             
-            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2)
+            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, delay: 0.05*Double(i))
         }
     }
     
     // Creates a copy of the palm tree and randomizes the animation & rotation
-    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float) {
+    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, delay: Double?) {
         // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
         
         let palmClone = palmNode!.clone()
@@ -132,9 +115,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let growPalmAction = SCNAction.scale(to: 0.3, duration: 0.5)
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
-        let palmSequence = SCNAction.sequence([playSound, growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
+
+        var delaySequence : SCNAction
+        var palmSequence : SCNAction
         
-        palmClone.runAction(palmSequence!)
+        // If a delay amount has been passed, delay the sequence from starting. Otherwise, play normal sequence right away
+        if let delayAmt = delay {
+            delaySequence = SCNAction.wait(duration: delayAmt)
+            palmSequence = SCNAction.sequence([
+                    delaySequence,
+                    playSound,
+                    growPalmAction,
+                    shrinkPalmAction,
+                    SCNAction.removeFromParentNode()
+                ])!
+        } else {
+            palmSequence = SCNAction.sequence([
+                    playSound,
+                    growPalmAction,
+                    shrinkPalmAction,
+                    SCNAction.removeFromParentNode()
+                ])!
+        }
+        
+        palmClone.runAction(palmSequence)
         
         // Set position of palm tree to position passed through parameter
         palmClone.position = position
