@@ -144,7 +144,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let shrinkPalmAction = SCNAction.scale(to: 0, duration: 1.5)
         let palmSequence = SCNAction.sequence([playSound, growPalmAction, shrinkPalmAction, SCNAction.removeFromParentNode()])
         
-        palmClone.runAction(palmSequence)
+        palmClone.runAction(palmSequence!)
         
         // Set position of palm tree to position passed through parameter
         palmClone.position = position
