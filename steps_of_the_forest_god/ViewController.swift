@@ -118,21 +118,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
     }
     
-    // Creates trees in a ring
-    func createPalmTreeRing(position: SCNVector3, radius: Float, amount: Int) {
+    // Creates ring of trees around a specified point
+    func createForestRing(position: SCNVector3, radius: Float, amount: Int) {
         // Calculate points along the circumfrence
         for i in 0...(amount-1) {
             // Use trigonometry to calculate coordinates #radians
             var treePosition: SCNVector3 = position
             treePosition.x = treePosition.x + (radius)*cos(2.0 * Float.pi / Float(amount) * Float(i))
             treePosition.z = treePosition.z - (radius)*sin(2.0 * Float.pi / Float(amount) * Float(i))
-            
-            createPalmTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 1.0)
+
+            createTree(position: treePosition, maxScale: 0.5, minScale: 0.2, maxDelay: 1.0)
         }
     }
     
-    // Creates a copy of the palm tree and randomizes the animation & rotation
-    func createPalmTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double) {
+    // Creates a copy of a random tree and randomizes the animation & rotation
+    func createTree(position : SCNVector3, maxScale : Float, minScale: Float, maxDelay: Double) {
+        // TODO: Randomize the palm tree's vertical rotation and the scale the trees grow to
+        
         let allTrees = [palmNodes, pineNodes, treeNodes, trunkNodes]
         let randTypeIndex = arc4random_uniform(UInt32(allTrees.count))
         let randType = allTrees[Int(randTypeIndex)]
@@ -196,8 +198,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         guard let hitFeature = results.last else { return }
         let hitTransform = SCNMatrix4(hitFeature.worldTransform)
         let hitPosition = SCNVector3Make(hitTransform.m41, hitTransform.m42, hitTransform.m43)
-        
-        // Creates a palm tree at the location detected by touch
-        createPalmTreeRing(position: hitPosition, radius: 0.25, amount: 8)
+
+        // Creates a forest ring at the location detected by touch
+        createForestRing(position: hitPosition, radius: 0.15, amount: 8)
     }
 }
